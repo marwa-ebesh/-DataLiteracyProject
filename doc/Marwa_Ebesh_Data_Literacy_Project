@@ -1,0 +1,300 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2021
+
+% ready for submission
+\usepackage[preprint]{neurips_2021}
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2021}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2021}
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2021}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{multicol} % Used for the two-column layout of the document
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{ {pic/} }
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=magenta,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+    }
+
+\title{Making out trends in computer science using the Stack
+Overflow survey}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+
+ 
+  \author{%
+  Marwa Ebesh\\
+  Matrikelnummer 6161671\\
+  \texttt{marwa.ebesh@uni-tuebingen.de}\\
+   \url{https://github.com/marwa-ebesh/-DataLiteracyProject}\\
+}
+
+  % examples of more authors
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \AND
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Every year, Stack Overflow conducts a massive survey of people on the site, covering all sorts of information like programming languages, salary, code style and various other information. We are planning to analyse the Stack Overflow survey to make out trends in computer science and compare groups of different nationality/age/gender/education level.  
+\end{abstract}
+
+\section{Introduction}
+
+Since 2011, Stack Overflow asks developers about their favourite technologies, job satisfaction, and age of first code, as well as how much they earn, and level of education. The year 2019 represented a large group of respondents: nearly 90,000 developers took the 20-minute survey that year.
+As that Stackoverflow is the world’s largest and most trusted community of software developers, We want to empower developers by providing them with rich information about themselves. And these precious information can be used to educate employers about who developers are and what they need.
+The aim of the study is to gain insight into the careers of programmers. Of particular focus are the factors that influence a developer's salary and the tools used. I address the overall goal through 4 specific questions:
+
+
+
+\subsection{Working hypothesis}
+
+\begin{enumerate}
+
+\item	What are the most popular languages and tools among developers?
+\item	How are programmer's salaries effected by years of programming experience?
+\item	Is it possible to predict whether a programmer is looking for a new job or not?
+\item	Is job satisfaction related to other features recorded in the survey – like salaries?
+
+\end{enumerate}
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+
+\item	Stack overflow's data is representative of the community of data scientists
+\item	All salaries listed are in USD (see their methodology for information on how they converted local currencies used by respondents to U.S. dollars)
+\item	Years spent programming is a good indicator of professional experience as opposed to years spent coding as a job
+
+\end{itemize}
+
+\section{Description of the data}
+
+Data is directly taken from StackOverflow and licensed under the ODbL license. 
+The data were downloaded from the platform Stack overflow. Different data sets were suggested and I picked the most suitable for the analysis.
+The data set for the annual survey has a high usability and is well suited for analyses.
+\begin{itemize}
+
+
+\item Data source: \url{https://insights.stackoverflow.com/survey}
+
+\item Size: 77,3 MB
+\item Rows: 88883
+\item Columns: 85
+
+\end{itemize}
+
+\subsection{Brief Description for most important Columns}
+
+surveyresultsschema.csv lists each survey question in long form. There are a total of 85 different Questions. The questions used for analysis are the columns of our dataset, the most important ones are:
+\begin{itemize}
+\item Country: Stack Overflow serves the international community, and the survey received responses from almost every country on Earth.
+\item	Edlevel: Which of the following best describe your education level?
+\item	ConvertedComp: What is your current annual base salary, before taxes, and excluding bonuses, grants, or other compensation converted to annual USD salaries using the exchange rate on 2019-02-01, assuming 12 working months and 50 working weeks.
+\item	YearsCode: Including any education, how many years have you been coding? 
+\item	HaveWorkedLanguage: Which of the following languages have you done extensive development work in over the past year?
+\item	JobSat: How satisfied are you with your current job?
+\item	JobSeek: Which of the following best describes your current job-seeking status?
+\item	Age: What is your age (in years)
+
+\end{itemize}
+
+\subsection{Data type}
+
+int64, object and float64
+
+\subsection{Missed values}
+
+The stack overflow survey data set is great to work with as it has many data points (respondents). Unfortunately, it also comes with a lot of missing data points and it is not clear why exactly each of these data points are missing.
+For instance, looking at the data regarding languages that developers have worked with, it is not clear if NaN represents :
+\begin{enumerate}
+\item	 a null value because respondents were lazy and did not fill this in,
+or
+\item	 if respondents did not work with any languages in the past year
+Because of this ambiguity, we have elected to sometimes drop data entries with null and sometimes (due to lack of entries) to fill it with mean values.
+Of the 88883 surveyed, there is a considerable amount of missing data points for most of the columns, However, the most affected columns (with 35 percent missed values) are: ['CompTotal', 'ConvertedComp', 'CodeRevHrs', 'BlockchainOrg'].
+\end{enumerate}
+
+\section{Description of data preparation}
+The data is relatively clean in its native form, however, there were two important preprocessing tasks:
+\begin{enumerate}
+\item	Convert 2 categories in YearsCode: '50 or more years' and ‘less than a year’ from its current form to a numeric value arbitrarily to 50 and 0.
+\item	For analysis, Since the job satisfaction question has categorical values, I decided to map these into numerical values with a scalar from 1(very bad) to 4(very good).
+\end{enumerate}
+Since the first question should be answered by creating a machine learning predictor for the data, and the second question we will analyze the correlation between job satisfaction and salary, we need to prepare the data to be used properly. Therefore, we converted numerical NaNs to the mean of the column and converted categorical binary values for the first one. Moreover, we deleted all NaN entries for the second one.
+
+
+\section{Data Analyses process}
+
+
+I started by finding out what are the highest Surveyed Countries.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.9\textwidth]{NeurIPS_style/pic/a.png}
+\end{figure}
+
+Then I tried to discover which programming languages have been used in that year.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.9\textwidth]{NeurIPS_style/pic/b.png}
+\end{figure}
+
+\newpage
+It was also interesting to figure out the relationship between salaries and years of coding experience. Interestingly, the stack overflow survey has elected to find out the amount of years developers have been coding / coding on jobs using 1 year bins.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.9\textwidth]{NeurIPS_style/pic/c.png}
+\end{figure}
+
+The following map shows the level of average income per country.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1\textwidth]{NeurIPS_style/pic/d2.png}
+\end{figure}
+
+\newpage
+
+Sadly, gender pay gap is present in developer industry.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.9\textwidth]{NeurIPS_style/pic/e.png}
+\end{figure}
+
+As expected, education level has an effect on salaries. 
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.49\textwidth]{NeurIPS_style/pic/f.png}
+\end{figure}
+
+\newpage
+
+The most interesting: Relationship between Salary and years of coding for satisfaction level
+Also, on the top of the plot, there appear to be a number of outliers.
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1.1\textwidth]{NeurIPS_style/pic/g.png}
+\end{figure}
+
+My research shows that there is no correlation between making more money and a higher job satisfaction 
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.7\textwidth]{NeurIPS_style/pic/h.png}
+\end{figure}
+
+\newpage
+
+\subsection{Machine learning method}
+Is it possible to predict whether a programmer is looking for a new job or not?
+For this we will use three different methods:
+\begin{itemize}
+\item Logistics Regression 
+\item Native Bayes Classification (BernoulliNB) 
+\item Support vector machine (SVC) 
+\end{itemize}
+
+\subsection{Quality criteria}
+
+We would like to achieve a score of at least 0.75
+
+\section{Application of different algorithms}
+\subsection{Logistic Regression}
+Logistic regression is a very robust classification method which is able to predict the probability of a dependent binary target variable.
+\subsection{Bayes Classification}
+The Bayes classification with Bernoulli is a statistical classification method which is designed for binary/Boolean features. In contrast to Bayes, Bernoulli refers to the principle of decisions under risk. This method was added that it is well suited here.
+\subsection{Support Vector Machine}
+This algorithm divides data by means of an auxiliary vector in such a way into classes, that these have a distance to each other as large as possible. This algorithm is versatile due to its generalizability, and well suited for a binary classification method.
+
+
+
+
+
+\begin{table}[h]
+  \centering
+  \caption{Score table}
+  \label{sample-table}
+  \begin{tabular}{lll}
+    \toprule        \\
+    Algorithm     & Test-score     & Cross-Validation 3 scores \\
+    \midrule
+    Logistic regression & 0.74  & 0.73    0.73    0.73     \\
+    
+    BernoulliBN     & 0.74 & 0.73    0.73    0.73      \\
+    
+    SVC     & 0.74       & -    -    - \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Lesson learned}
+
+Only the time factor prevented me from getting better results. The project has rounded what we have learned.
+I always tend to choose interesting (to me) relationships between variables that are complicated. In this case, I was trying to use regression to show a linear relationship between job satisfaction and other features, but honestly it's hard to prove because it's a complicated reality to model. so modeling it with a linear regression model is only sort of okay.
+The division of the y-values for JobSeek between True and False was not equal (73 percent - 26 percent) which might lead to a worse score since the algorithms can be affected by the size of the class, they will be preferred based on size.
+\begin{itemize}
+\item	A common misconception about developers is that they've all been programming since childhood. In fact, we see a wide range of experience levels. Among professional developers.
+\item	There are numerous useful questions in the data set and a plethora of insight questions beyond what is listed in the goals section. Further analysis insight questions can made in other projects.
+\end{itemize}
+
+
+\end{document}
